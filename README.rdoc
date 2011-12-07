@@ -1,0 +1,20 @@
+==== About
+    This is a simple  cucumber html formatter with images, logs and page sources. These resources will be captured by SystemCapture  module
+
+==== Usage example
+   Please, place files into features/support/formatter/. You should have $log_dir global var defined or feel free to fork this project and refactoring this.
+
+
+   In env.rb file:
+
+   Before do
+     $common_resource_name = Time.new.to_i.to_s
+     $log = Logger.new("#{$log_dir}/#{$common_resource_name}.log", 0, 10 * 1024 * 1024) # 10mb log
+     $log.datetime_format = "%d.%m %H:%M:%S"
+   end
+
+   After do
+     if @browser
+       SystemCapture.capture(@browser, $common_resource_name, File.expand_path($log_dir))
+     end
+   end
